@@ -12,25 +12,25 @@ const getInventorys = async (req, res, next) => {
   }
 };
 
-const addChemicals = async (req, res, next) => {
-  const { name, description, unit } = req.body;
+// const addChemicals = async (req, res, next) => {
+//   const { name, description, unit } = req.body;
 
-  try {
-    // Перевірка, чи добриво з такою назвою вже існує
-    const findChemical = await Chemical.findOne({ name });
-    if (findChemical) {
-      return res
-        .status(400)
-        .json({ message: "ЗЗР із такою назвою вже є у списку" });
-    }
+//   try {
+//     // Перевірка, чи добриво з такою назвою вже існує
+//     const findChemical = await Chemical.findOne({ name });
+//     if (findChemical) {
+//       return res
+//         .status(400)
+//         .json({ message: "ЗЗР із такою назвою вже є у списку" });
+//     }
 
-    // Створення нового добрива
-    const сhemical = await Chemical.create({ name, description, unit });
+//     // Створення нового добрива
+//     const сhemical = await Chemical.create({ name, description, unit });
 
-    res.status(201).json({ message: "ЗЗР успіжно додано до списку", сhemical });
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.status(201).json({ message: "ЗЗР успіжно додано до списку", сhemical });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 module.exports = { getInventorys };
