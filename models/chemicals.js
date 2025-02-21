@@ -8,6 +8,7 @@ const chemicalsSchema = new Schema(
       default: "Цей засіб виористовується в процесі обробітку культур",
     },
     unit: { type: String, required: true },
+    initialBalances: { type: Number, default: 0 },
   },
   { versionKey: false, timestamps: true }
 );

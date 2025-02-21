@@ -12,7 +12,7 @@ const getChemicals = async (req, res, next) => {
 };
 
 const addChemicals = async (req, res, next) => {
-  const { name, description, unit } = req.body;
+  const { name, description, unit, initialBalances } = req.body;
 
   try {
     // Перевірка, чи добриво з такою назвою вже існує
@@ -24,10 +24,18 @@ const addChemicals = async (req, res, next) => {
     }
 
     // Створення нового добрива
-    const chemical = await Chemical.create({ name, description, unit });
+    const chemical = await Chemical.create({
+      name,
+      description,
+      unit,
+      initialBalances,
+    });
 
     // Додавання нового добрива відразу до залишків
-    await Inventory.create({ chemicalId: chemical._id });
+    await Inventory.create({
+      chemicalId: chemical._id,
+      currentStock: initialBalances,
+    });
 
     res.status(201).json({ message: "ЗЗР успіжно додано до списку", chemical });
   } catch (error) {
