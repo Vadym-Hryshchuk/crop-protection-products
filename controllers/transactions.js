@@ -4,7 +4,7 @@ const Transactions = require("../models/transactions");
 const getTransactions = async (req, res, next) => {
   try {
     const transactionsList = await Transactions.find()
-      // .populate("chemicalId", "name")
+      .populate("chemicalId", "name")
       .exec();
 
     res.send(transactionsList);
