@@ -5,7 +5,7 @@ const chemicalsSchema = new Schema(
     name: { type: String, required: true, unique: true },
     description: {
       type: String,
-      default: "Цей засіб виористовується в процесі обробітку культур",
+      default: "Цей засіб використовується в процесі обробітку культур",
     },
     unit: { type: String, required: true },
     initialBalances: { type: Number, default: 0 },
