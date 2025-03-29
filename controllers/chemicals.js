@@ -43,4 +43,21 @@ const addChemicals = async (req, res, next) => {
   }
 };
 
-module.exports = { getChemicals, addChemicals };
+const removeChemicals = async (req, res, next) => {
+  const { chemicalId } = req.body;
+  try {
+    const chemical = await Chemical.findByIdAndDelete(chemicalId);
+
+    if (chemical === null) {
+      return res.status(400).json({ message: "Такого ЗЗР не знайдено" });
+    }
+    const { _id } = await Inventory.findOne({ chemicalId });
+    await Inventory.findByIdAndDelete(_id);
+
+    return res.json({ message: "chemical deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getChemicals, addChemicals, removeChemicals };
