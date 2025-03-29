@@ -11,6 +11,6 @@ router.get("/", getTransactions);
 
 router.post("/", addTransaction);
 
-router.delete("/", removeTransaction);
+router.delete("/:id", removeTransaction);
 
 module.exports = router;

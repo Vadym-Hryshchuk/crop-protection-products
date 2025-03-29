@@ -49,11 +49,12 @@ const addTransaction = async (req, res, next) => {
 };
 
 const removeTransaction = async (req, res, next) => {
-  const { transactionId } = req.body;
+  const { id } = req.params;
+
   try {
     // Шукаємо транзакцію і отримуємо з неї chemicalId, type, quantity
     const receivedTransaction = await Transactions.findOne({
-      _id: transactionId,
+      _id: id,
     });
 
     if (receivedTransaction === null) {
@@ -62,7 +63,7 @@ const removeTransaction = async (req, res, next) => {
     const { chemicalId, type, quantity } = receivedTransaction;
 
     // Видаляємо транзакцію
-    await Transactions.findByIdAndDelete(transactionId);
+    await Transactions.findByIdAndDelete(id);
 
     // Повертаємо залишки у попереднє значення після видалення транзакції
     const { _id, currentStock } = await Inventory.findOne({ chemicalId });
@@ -79,7 +80,7 @@ const removeTransaction = async (req, res, next) => {
       });
     }
 
-    return res.json({ message: "chemical deleted" });
+    return res.json({ message: "Операцію успішно видалено" });
   } catch (error) {
     next(error);
   }
