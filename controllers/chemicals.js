@@ -52,7 +52,6 @@ const removeChemicals = async (req, res, next) => {
       return res.status(400).json({ message: "Такого ЗЗР не знайдено" });
     }
     const { _id } = await Inventory.findOne({ chemicalId: id });
-
     await Inventory.findByIdAndDelete(_id);
 
     return res.json({ message: "ЗЗР видалено" });
