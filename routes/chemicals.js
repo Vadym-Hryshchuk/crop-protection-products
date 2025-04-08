@@ -11,6 +11,6 @@ router.get("/", getChemicals);
 
 router.post("/", addChemicals);
 
-router.delete("/", removeChemicals);
+router.delete("/:id", removeChemicals);
 
 module.exports = router;

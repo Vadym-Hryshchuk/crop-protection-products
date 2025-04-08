@@ -44,17 +44,18 @@ const addChemicals = async (req, res, next) => {
 };
 
 const removeChemicals = async (req, res, next) => {
-  const { chemicalId } = req.body;
+  const { id } = req.params;
   try {
-    const chemical = await Chemical.findByIdAndDelete(chemicalId);
+    const chemical = await Chemical.findByIdAndDelete(id);
 
     if (chemical === null) {
       return res.status(400).json({ message: "Такого ЗЗР не знайдено" });
     }
-    const { _id } = await Inventory.findOne({ chemicalId });
+    const { _id } = await Inventory.findOne({ chemicalId: id });
+
     await Inventory.findByIdAndDelete(_id);
 
-    return res.json({ message: "chemical deleted" });
+    return res.json({ message: "ЗЗР видалено" });
   } catch (error) {
     next(error);
   }
