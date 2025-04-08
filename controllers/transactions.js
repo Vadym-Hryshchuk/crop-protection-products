@@ -66,7 +66,7 @@ const removeTransaction = async (req, res, next) => {
     await Transactions.findByIdAndDelete(id);
 
     // Повертаємо залишки у попереднє значення після видалення транзакції
-    const { _id, currentStock } = await Inventory.findOne({ chemicalId });
+    const { _id, currentStock } = await Inventory.findOne({ chemicalId }); //Потрібно { _id, currentStock } замінити на response, щоб можна було перевірити на null (Це коли ми видалимо ЗЗР тоді видалиться і залишок і тут станеться помилка)
 
     if (type === "income") {
       await Inventory.findByIdAndUpdate(_id, {
