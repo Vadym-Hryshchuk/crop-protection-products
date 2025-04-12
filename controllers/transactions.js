@@ -17,6 +17,19 @@ const addTransaction = async (req, res, next) => {
   const { chemicalId, type, quantity, description, date } = req.body;
 
   try {
+    // Шукаємо чи є залишок із таким id та порівнюємо з 0
+    const chemical = await Inventory.findOne({ chemicalId });
+
+    if (!chemical) {
+      return res.status(404).json({ message: "ЗЗР не знайдено" });
+    }
+
+    if (type === "expense" && chemical.currentStock < quantity) {
+      return res.status(400).json({
+        message: `Недостатньо залишку. Можна використати тільки ${chemical.currentStock}`,
+      });
+    }
+
     // Додаємо трнсакцію
     const newTransaction = await Transactions.create({
       chemicalId,
@@ -27,19 +40,17 @@ const addTransaction = async (req, res, next) => {
     });
 
     // Оновлюємо залишок
-    const chemical = await Inventory.findOne({ chemicalId });
 
-    if (type === "income") {
-      await Inventory.findByIdAndUpdate(chemical._id, {
-        currentStock: (chemical.currentStock += quantity),
-        new: true,
-      });
-    } else if (type === "expense") {
-      await Inventory.findByIdAndUpdate(chemical._id, {
-        currentStock: (chemical.currentStock -= quantity),
-        new: true,
-      });
-    }
+    const updatedStock =
+      type === "income"
+        ? chemical.currentStock + quantity
+        : chemical.currentStock - quantity;
+
+    await Inventory.findByIdAndUpdate(chemical._id, {
+      currentStock: updatedStock,
+      new: true,
+    });
+
     res
       .status(201)
       .json({ message: "Операцію додано успішно", newTransaction });
